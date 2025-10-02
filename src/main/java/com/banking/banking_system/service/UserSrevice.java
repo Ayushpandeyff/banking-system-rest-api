@@ -3,6 +3,9 @@ package com.banking.banking_system.service;
 import com.banking.banking_system.entity.User;
 import com.banking.banking_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +14,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserSrevice {
+public class UserSrevice implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private WalletService walletService;
+    @Override
+    public UserDetails loadUserByUsername(String email)throws UsernameNotFoundException{
+        Optional<User> userOptional=findUserByEmail(email);
+        if(userOptional.isEmpty()){
+            throw new UsernameNotFoundException("user not found"+email);
+        }
+        User user=userOptional.get();
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword()).authorities("ROLE"+user.getRole())
+                .accountExpired(false).accountLocked(false).credentialsExpired(false).disabled(false).build();
+
+    }
      public User saveUser(User user){
          String encryptedPassword=passwordEncoder.encode(user.getPassword());
          user.setPassword(encryptedPassword);
          return userRepository.save(user);
+
      }
      public Optional<User> findUserById(Long id){
          return userRepository.findById(id);
@@ -41,8 +60,11 @@ public class UserSrevice {
              throw new RuntimeException("email already exist");
          }else{
              User user=new User(firstName,lastName,email,password,phoneNumber);
-             return saveUser(user);
+            User savedUser= saveUser(user);
+             walletService.createWallet(savedUser);
+             return savedUser;
          }
+
     }
  public boolean validatePassowrd(String rawPassword,String encodedPassword){
          return passwordEncoder.matches(rawPassword,encodedPassword);
