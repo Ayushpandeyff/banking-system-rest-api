@@ -1,4 +1,5 @@
 package com.banking.banking_system.entity;
+import com.banking.banking_system.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

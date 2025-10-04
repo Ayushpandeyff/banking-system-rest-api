@@ -1,6 +1,6 @@
 package com.banking.banking_system.dto;
 
-import com.banking.banking_system.entity.Role;
+import com.banking.banking_system.enums.Role;
 
 import java.time.LocalDateTime;
 

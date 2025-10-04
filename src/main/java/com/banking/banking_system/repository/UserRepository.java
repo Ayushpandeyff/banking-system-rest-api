@@ -1,6 +1,6 @@
 package com.banking.banking_system.repository;
 
-import com.banking.banking_system.entity.Role;
+import com.banking.banking_system.enums.Role;
 import com.banking.banking_system.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
