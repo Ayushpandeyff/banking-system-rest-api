@@ -1,5 +1,6 @@
 package com.banking.banking_system.service;
 
+import com.banking.banking_system.dto.WalletResponseDTO;
 import com.banking.banking_system.entity.User;
 import com.banking.banking_system.entity.Wallet;
 import com.banking.banking_system.repository.UserRepository;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -62,6 +65,23 @@ public class WalletService {
     }
     public Wallet getWalletByUser(User user){
         return walletRepository.findByUser(user).orElseThrow(()->new RuntimeException("User not found"));
+    }
+    public List<Wallet> getAllWallet(){
+        return walletRepository.findAll();
+    }
+    public List<WalletResponseDTO> getAllWalletDto(){
+        List<Wallet> wallets=walletRepository.findAll();
+        List<WalletResponseDTO> walletDtos=new ArrayList<>();
+        for(Wallet wallet:wallets){
+            WalletResponseDTO dto=new WalletResponseDTO();
+            dto.setId(wallet.getId());
+            dto.setBalance(wallet.getBalance());
+            dto.setUserId(wallet.getUser().getId());
+            dto.setUserEmail(wallet.getUser().getEmail());
+            walletDtos.add(dto);
+        }
+        return walletDtos;
+
     }
 
 }

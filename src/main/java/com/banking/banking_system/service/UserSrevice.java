@@ -1,5 +1,6 @@
 package com.banking.banking_system.service;
 
+import com.banking.banking_system.dto.UserResponseDTO;
 import com.banking.banking_system.entity.User;
 import com.banking.banking_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.StyledEditorKit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,6 +70,25 @@ public class UserSrevice implements UserDetailsService {
     }
  public boolean validatePassowrd(String rawPassword,String encodedPassword){
          return passwordEncoder.matches(rawPassword,encodedPassword);
+ }
+ public UserResponseDTO convertToDtO(User user){
+        UserResponseDTO dto=new UserResponseDTO();
+        dto.setId(user.getId());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastname(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
+        dto.setPhoneNumber(user.getPhonenumber());
+
+        return dto;
+
+ }
+ public List<UserResponseDTO>convertToList(List<User> users){
+        List<UserResponseDTO> dtos=new ArrayList<>();
+        for(User user:users){
+            dtos.add(convertToDtO(user));
+        }
+        return dtos;
  }
 
 }

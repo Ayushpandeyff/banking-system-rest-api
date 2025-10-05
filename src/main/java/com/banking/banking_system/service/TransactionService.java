@@ -1,5 +1,6 @@
 package com.banking.banking_system.service;
 
+import com.banking.banking_system.dto.TransactionResponseDTO;
 import com.banking.banking_system.entity.Transaction;
 import com.banking.banking_system.entity.Wallet;
 import com.banking.banking_system.enums.TransactionType;
@@ -36,6 +37,29 @@ public class TransactionService {
                                                        LocalDateTime startDate,
                                                        LocalDateTime endDate){
         return transactionRepository.findTransactionsbyWalletAndDateRange(wallet.getId(),startDate,endDate);
+    }
+    public TransactionResponseDTO convertToDto(Transaction transaction){
+        TransactionResponseDTO dto=new TransactionResponseDTO();
+        dto.setId(transaction.getId());
+        dto.setAmount(transaction.getAmount());
+        dto.setType(transaction.getType());
+        dto.setDescription(transaction.getDescreption());
+        dto.setTimeStamp(transaction.getTimestamp());
+        dto.setStatus(transaction.getStatus());
+
+        if(transaction.getFromWallet()!=null){
+            dto.setFromWalletId(transaction.getFromWallet().getId());
+            dto.setFromUserEmail(transaction.getFromWallet().getUser().getEmail());
+        }
+        if(transaction.getToWallet()!=null){
+            dto.setToWalletId(transaction.getToWallet().getId());
+            dto.setToUserEmail(transaction.getToWallet().getUser().getEmail());
+        }
+        return dto;
+
+    }
+    public List<TransactionResponseDTO>convertToDtoList(List<Transaction> transactions){
+        return transactions.stream().map(this::convertToDto).collect(java.util.stream.Collectors.toList());
     }
 
 }

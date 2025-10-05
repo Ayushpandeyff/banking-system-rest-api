@@ -2,14 +2,23 @@ package com.banking.banking_system.controller;
 
 import com.banking.banking_system.dto.TransferRequestDto;
 import com.banking.banking_system.entity.Transaction;
+import com.banking.banking_system.entity.User;
+import com.banking.banking_system.entity.Wallet;
 import com.banking.banking_system.service.MoneyTransferService;
+import com.banking.banking_system.service.TransactionService;
+import com.banking.banking_system.service.UserSrevice;
+import com.banking.banking_system.service.WalletService;
 import com.banking.banking_system.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,6 +26,12 @@ import java.util.Map;
 public class TransferController {
     @Autowired
     private MoneyTransferService moneyTransferService;
+    @Autowired
+    private TransactionService transactionService;
+    @Autowired
+    private UserSrevice userSrevice;
+    @Autowired
+    private WalletService walletService;
     @Autowired
     private JwtUtil jwtUtil;
     @PostMapping("/send")
@@ -60,3 +75,4 @@ public class TransferController {
     }
 
 }
+
