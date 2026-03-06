@@ -80,7 +80,7 @@ public class StatementController {
             response.put("summary",Map.of(
                     "totalTransaction",transactions.size(),
                     "totalDeposit",totalDeposits,
-                    "tota;Withdrawl",totalWithdrawls,
+                    "totalWithdrawl",totalWithdrawls,
                     "totalTransferSent",totaltransferSent,
                     "totalTransferRecived",totalTransferRecived,
                     "netAmount",totalDeposits.add(totalTransferRecived).subtract(totalWithdrawls).subtract(totaltransferSent)

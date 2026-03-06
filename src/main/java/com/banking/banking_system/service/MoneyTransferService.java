@@ -29,7 +29,7 @@ public class MoneyTransferService {
     @Transactional
     public Transaction transferMoney(String senderEmail, String reciverEmail, BigDecimal amount, String description){
         if(amount.compareTo(BigDecimal.ZERO)<=0){
-            throw new IllegalArgumentException("Amount sholud be greater then 0");
+            throw new IllegalArgumentException("Amount should be greater than 0");
         }
         User sender=userSrevice.findUserByEmail(senderEmail).orElseThrow(()->new IllegalArgumentException("User not found"));
         User receiver=userSrevice.findUserByEmail(reciverEmail).orElseThrow(()->new IllegalArgumentException("User not found"));
@@ -53,7 +53,7 @@ public class MoneyTransferService {
         }
         catch (Exception e){
             transcationService.updateTranscation(transcation,TranscationStatus.FAILED);
-            throw new RuntimeException("TRansation failed"+e);
+            throw new RuntimeException("Transaction failed"+e);
         }
 
     }
