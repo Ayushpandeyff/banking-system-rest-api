@@ -53,4 +53,16 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
     }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+
+        // Skip JWT filter for public endpoints
+        return path.equals("/api/users/register") ||
+                path.equals("/api/users/login") ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-resources") ||
+                path.startsWith("/webjars");
+    }
 }
